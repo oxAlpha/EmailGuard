@@ -50,6 +50,7 @@ EmailGuard helps cybersecurity professionals and system administrators identify 
    chmod +x EmailGuard.elf
 
 ```markdown
+
 ## Usage
 
 ### Windows
@@ -58,7 +59,10 @@ EmailGuard helps cybersecurity professionals and system administrators identify 
 3. Run the tool:
    ```bash
    EmailGuard.exe -email <path_to_email_file>
-###Linux
+
+```markdown
+
+### Linux
 1. Open a terminal window.
 2. Navigate to the directory where EmailGuard.elf is located.
 3. Run the tool
@@ -66,10 +70,12 @@ EmailGuard helps cybersecurity professionals and system administrators identify 
    ./EmailGuard.elf -email <path_to_email_file>
 
 ```markdown
+
 ## Command-Line Options
 
-- `-e <file>`: Specify the path to the email file you want to analyze.
+- `-email <file>`: Specify the path to the email file you want to analyze.
 - `--verbose`: Enables detailed output during the scanning process.
+
 ## Capabilities
 
 ### Email Analysis
@@ -83,10 +89,12 @@ EmailGuard helps cybersecurity professionals and system administrators identify 
 - **Phishing Links**: Identifies potentially dangerous URLs embedded in the email, such as links that disguise their true destination.
 - **Malicious Attachments**: Detects suspicious attachments by checking their file type and scanning for malicious content.
 - **Threat Intelligence**: Cross-references email components with known threat intelligence databases to identify potential threats.
+
 ## Logging and Reports
 
 - **Detailed Logs**: Generates comprehensive logs of all analyzed components, including any detected issues or malicious elements.
 - **Custom Reports**: Exports findings into readable reports for further review, aiding incident response teams in email threat investigations.
+
 ## Dependencies
 
 ### Windows
@@ -96,11 +104,11 @@ No additional dependencies are required. The tool is self-contained.
 ### Linux
 
 No additional dependencies are required. The tool is self-contained.
+
 ## Contributing
 
 Contributions are welcome! If you have suggestions for improvements or have found any issues, please open an issue or submit a pull request. Your contributions help make EmailGuard better!
+
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
-
-
