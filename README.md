@@ -23,9 +23,11 @@ EmailGuard is a security tool designed to enhance email security by identifying 
 - [License](#license)
 
 ## Overview
+
 EmailGuard helps cybersecurity professionals and system administrators identify malicious content in emails. Whether you're dealing with suspicious attachments, questionable links, or unusual email headers, EmailGuard quickly scans and flags risky components. With support for both Windows and Linux, it caters to a wide range of users across different environments.
 
 ## Features
+
 - **Cross-Platform:** Available as .exe for Windows and .elf for Linux.
 - **Email Parsing:** Extracts email components such as headers, body content, attachments, and URLs for analysis.
 - **Phishing Detection:** Detects common phishing indicators, such as deceptive URLs or suspicious sender domains.
@@ -46,48 +48,59 @@ EmailGuard helps cybersecurity professionals and system administrators identify 
 3. Make the file executable:
    ```bash
    chmod +x EmailGuard.elf
-Usage
-Windows
-Open a Command Prompt (CMD) or PowerShell window.
-Navigate to the directory where EmailGuard.exe is located.
-Run the tool:
-bash
-Copy code
-EmailGuard.exe -e <path_to_email_file>
-Linux
-Open a terminal window.
-Navigate to the directory where EmailGuard.elf is located.
-Run the tool:
-bash
-Copy code
-./EmailGuard.elf -email <path_to_email_file>
-Command-Line Options
--email <file>: Specify the path to the email file you want to analyze.
---verbose: Enables detailed output during the scanning process.
-Capabilities
-Email Analysis
-Headers: Analyzes email headers for suspicious sender information, altered paths, or unusual behavior.
-Body Content: Scans the body of the email for malicious links, scripts, or encoded content.
-Attachments: Inspects email attachments for known malware signatures or suspicious file types.
-Threat Detection
-Phishing Links: Identifies potentially dangerous URLs embedded in the email, such as links that disguise their true destination.
-Malicious Attachments: Detects suspicious attachments by checking their file type and scanning for malicious content.
-Threat Intelligence: Cross-references email components with known threat intelligence databases to identify potential threats.
-Logging and Reports
-Detailed Logs: Generates comprehensive logs of all analyzed components, including any detected issues or malicious elements.
-Custom Reports: Exports findings into readable reports for further review, aiding incident response teams in email threat investigations.
-Dependencies
-Windows
+
+```markdown
+## Usage
+
+### Windows
+1. Open a Command Prompt (CMD) or PowerShell window.
+2. Navigate to the directory where `EmailGuard.exe` is located.
+3. Run the tool:
+   ```bash
+   EmailGuard.exe -email <path_to_email_file>
+###Linux
+1. Open a terminal window.
+2. Navigate to the directory where EmailGuard.elf is located.
+3. Run the tool
+   ```bash
+   ./EmailGuard.elf -email <path_to_email_file>
+
+```markdown
+## Command-Line Options
+
+- `-e <file>`: Specify the path to the email file you want to analyze.
+- `--verbose`: Enables detailed output during the scanning process.
+## Capabilities
+
+### Email Analysis
+
+- **Headers**: Analyzes email headers for suspicious sender information, altered paths, or unusual behavior.
+- **Body Content**: Scans the body of the email for malicious links, scripts, or encoded content.
+- **Attachments**: Inspects email attachments for known malware signatures or suspicious file types.
+
+### Threat Detection
+
+- **Phishing Links**: Identifies potentially dangerous URLs embedded in the email, such as links that disguise their true destination.
+- **Malicious Attachments**: Detects suspicious attachments by checking their file type and scanning for malicious content.
+- **Threat Intelligence**: Cross-references email components with known threat intelligence databases to identify potential threats.
+## Logging and Reports
+
+- **Detailed Logs**: Generates comprehensive logs of all analyzed components, including any detected issues or malicious elements.
+- **Custom Reports**: Exports findings into readable reports for further review, aiding incident response teams in email threat investigations.
+## Dependencies
+
+### Windows
+
 No additional dependencies are required. The tool is self-contained.
 
-Linux
-No additional dependencies are required. The tool is self-contained.
+### Linux
 
-Contributing
+No additional dependencies are required. The tool is self-contained.
+## Contributing
+
 Contributions are welcome! If you have suggestions for improvements or have found any issues, please open an issue or submit a pull request. Your contributions help make EmailGuard better!
+## License
 
-License
 This project is licensed under the MIT License. See the LICENSE file for details.
-
 
 
