@@ -57,15 +57,17 @@ Windows
 1. Open a Command Prompt (CMD) or PowerShell window.
 2. Navigate to the directory where EmailGuard.exe is located.
 3. Run the tool:
-
-EmailGuard.exe -email <path_to_email_file>
-
+  ```bash
+    EmailGuard.exe -email <path_to_email_file>
+    ```
 Linux
 1. Open a terminal window.
 2. Navigate to the directory where EmailGuard.elf is located.
 3. Run the tool:
 
-./EmailGuard.elf -email <path_to_email_file>
+  ```bash
+    ./EmailGuard.elf -email <path_to_email_file>
+    ```
 
 Command-Line Options
 -email <file>: Specify the path to the email file you want to analyze.
@@ -99,9 +101,4 @@ Contributing
 License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-### Summary of Corrections:
-- Removed unnecessary `markdown` tags around code blocks in the `Usage` section.
-- Ensured sub-headings in `Dependencies` are correctly formatted.
-- Fixed the code block formatting.
 
-Let me know if you need any more changes!
