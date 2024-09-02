@@ -9,7 +9,6 @@ import argparse
 import time
 import sys
 from io import BytesIO
-import whois
 
 # Regular expressions for different IOCs
 ip_regex = re.compile(r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b')
@@ -149,34 +148,20 @@ def check_md5_virustotal(md5):
     else:
         return 'unknown', response.text
 
-def whois_lookup(ip):
-    try:
-        dot_animation(f"Performing Whois lookup for IP {ip}")
-        w = whois.whois(ip)
-        whois_info = {
-            'Domain': w.get('domain_name', ''),
-            'Registrar': w.get('registrar', ''),
-            'Creation Date': w.get('creation_date', ''),
-            'Expiration Date': w.get('expiration_date', ''),
-            'Updated Date': w.get('updated_date', ''),
-            'Name Servers': ', '.join(filter(None, w.get('name_servers', [])))  # Ensure we only join valid strings
-        }
-        return whois_info
-    except Exception as e:
-        return {'Error': str(e)}
-
-def print_section(title, content):
-    print("\n" + "="*50)
-    print(f"{title}")
-    print("="*50)
-    print(content)
-    print("\n" + "="*50)
+def print_section(title, content, file=None):
+    section_content = "\n" + "="*50 + "\n" + f"{title}" + "\n" + "="*50 + "\n" + content + "\n" + "="*50
+    if file:
+        with open(file, 'a') as f:
+            f.write(section_content + "\n")
+    else:
+        print(section_content)
 
 def main():
     print_banner()
     
     parser = argparse.ArgumentParser(description='Extract IOCs, attachments, and authentication results from email headers.')
     parser.add_argument('-email', type=str, required=True, help='Path to the email file (in .eml format)')
+    parser.add_argument('-output', type=str, help='Path to the output report file')
     args = parser.parse_args()
     
     header_text, extracted_headers, attachments = parse_email(args.email)
@@ -186,12 +171,8 @@ def main():
     ioc_content = "Extracted_IPs:\n"
     for ip in iocs.get('IP Addresses', []):
         ioc_content += f"  {ip}\n"
-        whois_info = whois_lookup(ip)
-        if 'Error' in whois_info:
-            ioc_content += f"    Whois Info Error: {whois_info['Error']}\n"
-        else:
-            for key, value in whois_info.items():
-                ioc_content += f"    {key}: {value}\n"
+        ip_status, ip_message = check_ip_virustotal(ip)
+        ioc_content += f"    VirusTotal IP Result: {ip_status} ({ip_message})\n"
     
     email_content = "Extracted_Emails:\n"
     for email in iocs.get('Emails', []):
@@ -224,12 +205,18 @@ def main():
         else:
             header_content += f"{header}: {value}\n"
     
-    print_section("IOCs extracted from headers", ioc_content + email_content + url_content)
-    print_section("Attachments and their Hashes", attachment_content)
-    print_section("Authentication Results", auth_content)
-    print_section("Extracted Headers", header_content)
-
-    print_section("VirusTotal IP Results", '\n'.join(f"IP: {ip}\n  Result: {check_ip_virustotal(ip)[0]} ({check_ip_virustotal(ip)[1]})" for ip in iocs.get('IP Addresses', [])))
+    if args.output:
+        # Write output to the specified file
+        print_section("IOCs extracted from headers", ioc_content + email_content + url_content, args.output)
+        print_section("Attachment Details", attachment_content, args.output)
+        print_section("Authentication Results", auth_content, args.output)
+        print_section("Email Headers", header_content, args.output)
+    else:
+        # Print to console
+        print_section("IOCs extracted from headers", ioc_content + email_content + url_content)
+        print_section("Attachment Details", attachment_content)
+        print_section("Authentication Results", auth_content)
+        print_section("Email Headers", header_content)
 
 if __name__ == "__main__":
     main()
