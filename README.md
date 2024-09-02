@@ -1,8 +1,9 @@
-# EmailGuard
+# Email IOC Extractor and Analyzer
 
-EmailGuard is a security tool designed to enhance email security by identifying and mitigating potential threats within email content. It is capable of parsing and analyzing various aspects of email data, such as headers, bodies, attachments, and URLs, to detect common signs of phishing, malware, or other malicious activity. The tool is lightweight and available for both Windows and Linux platforms, ensuring broad usability.
+**Email IOC Extractor and Analyzer** is a security tool designed to enhance email security by identifying and analyzing potential threats within email content. It parses and analyzes email headers, bodies, attachments, and URLs to detect common signs of phishing, malware, or other malicious activities. This tool is lightweight and available for both Windows and Linux platforms.
 
 ## Table of Contents
+
 - [Overview](#overview)
 - [Features](#features)
 - [Installation](#installation)
@@ -15,7 +16,7 @@ EmailGuard is a security tool designed to enhance email security by identifying 
 - [Capabilities](#capabilities)
   - [Email Analysis](#email-analysis)
   - [Threat Detection](#threat-detection)
-- [Logging and Reports](#logging-and-reports)
+  - [Logging and Reports](#logging-and-reports)
 - [Dependencies](#dependencies)
   - [Windows](#windows-2)
   - [Linux](#linux-2)
@@ -24,81 +25,98 @@ EmailGuard is a security tool designed to enhance email security by identifying 
 
 ## Overview
 
-EmailGuard helps cybersecurity professionals and system administrators identify malicious content in emails. Whether you're dealing with suspicious attachments, questionable links, or unusual email headers, EmailGuard quickly scans and flags risky components. With support for both Windows and Linux, it caters to a wide range of users across different environments.
+The Email IOC Extractor and Analyzer helps cybersecurity professionals and system administrators identify malicious content in emails. Whether dealing with suspicious attachments, questionable links, or unusual email headers, the tool quickly scans and flags risky components. It supports both Windows and Linux, catering to a wide range of users.
 
 ## Features
 
-- **Cross-Platform:** Available as .exe for Windows and .elf for Linux.
+- **Cross-Platform:** Available for both Windows (.exe) and Linux (.elf).
 - **Email Parsing:** Extracts email components such as headers, body content, attachments, and URLs for analysis.
 - **Phishing Detection:** Detects common phishing indicators, such as deceptive URLs or suspicious sender domains.
 - **Malware Scanning:** Scans for potential malware in email attachments or embedded links.
 - **Threat Intelligence:** Matches email data against known threat databases to identify malicious content.
 - **Logging:** Saves detailed logs of all detected issues for further analysis.
-- **Portable:** No need for installation; just download and run.
+- **Portable:** No installation required; just download and run.
 
 ## Installation
 
 ### Windows
-1. Download the `EmailGuard.exe` file from the Releases section.
+
+1. Download the `EmailIOCExtractor.exe` file from the Releases section.
 2. Place the file in a directory of your choice.
+3. Run the executable directly.
 
 ### Linux
-1. Download the `EmailGuard.elf` file from the Releases section.
+
+1. Download the `EmailIOCExtractor.elf` file from the Releases section.
 2. Open your terminal and navigate to the directory where the file is located.
 3. Make the file executable:
-   ```bash
-   chmod +x EmailGuard.elf
 
-```markdown
-
-Usage
-
-Windows
-1. Open a Command Prompt (CMD) or PowerShell window.
-2. Navigate to the directory where EmailGuard.exe is located.
-3. Run the tool:
-  ```bash
-    EmailGuard.exe -email <path_to_email_file>
-    ```
-Linux
-1. Open a terminal window.
-2. Navigate to the directory where EmailGuard.elf is located.
-3. Run the tool:
-
-  ```bash
-    ./EmailGuard.elf -email <path_to_email_file>
+    ```bash
+    chmod +x EmailIOCExtractor.elf
     ```
 
-Command-Line Options
--email <file>: Specify the path to the email file you want to analyze.
---verbose: Enables detailed output during the scanning process.
+4. Run the executable:
 
-Capabilities
- Email Analysis
- . Headers: Analyzes email headers for suspicious sender information, altered paths, or    unusual behavior.
- . Body Content: Scans the body of the email for malicious links, scripts, or encoded    content.
- . Attachments: Inspects email attachments for known malware signatures or suspicious    file types.
+    ```bash
+    ./EmailIOCExtractor.elf
+    ```
 
- Threat Detection
- . Phishing Links: Identifies potentially dangerous URLs embedded in the email, such as    links that disguise their true destination.
- . Malicious Attachments: Detects suspicious attachments by checking their file type    and scanning for malicious content.
- . Threat Intelligence: Cross-references email components with known threat    intelligence databases to identify potential threats.
+## Usage
 
-Logging and Reports
- . Detailed Logs: Generates comprehensive logs of all analyzed components, including    any detected issues or malicious elements.
- . Custom Reports: Exports findings into readable reports for further review, aiding    incident response teams in email threat investigations.
+### Windows
 
-Dependencies
-. Windows:
-     No additional dependencies are required. The tool is self-contained.
+1. Open Command Prompt or PowerShell.
+2. Run the tool using:
 
-. Linux
-     No additional dependencies are required. The tool is self-contained.
+    ```bash
+    EmailIOCExtractor.exe -email /path/to/your/email_file.eml -output /path/to/output_report.txt
+    ```
 
-Contributing
-  Contributions are welcome! If you have suggestions for improvements or have found any   issues, please open an issue or submit a pull request. Your contributions help make   EmailGuard better!
+### Linux
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+1. Open a terminal.
+2. Run the tool using:
 
+    ```bash
+    ./EmailIOCExtractor.elf -email /path/to/your/email_file.eml -output /path/to/output_report.txt
+    ```
+
+## Command-Line Options
+
+- `-email`: Path to the email file (in .eml format).
+- `-output`: Path to the output report file. If not specified, results will be printed to the console.
+
+## Capabilities
+
+### Email Analysis
+
+- Extracts IP addresses, email addresses, and URLs from email headers.
+- Analyzes email attachments and computes their MD5, SHA1, and SHA256 hashes.
+
+### Threat Detection
+
+- Queries VirusTotal to check the status of IP addresses and file hashes.
+- Detects potential phishing and malware threats based on analysis results.
+
+### Logging and Reports
+
+- Provides detailed logs of all detected issues.
+- Outputs results to a report file or console.
+
+## Dependencies
+
+### Windows
+
+- Python 3.x
+- Required Python packages: `requests`
+
+### Linux
+
+- Python 3.x
+- Required Python packages: `requests`
+
+Install the necessary packages using pip:
+
+```bash
+pip install requests
 
