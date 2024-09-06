@@ -41,13 +41,13 @@ The Email IOC Extractor and Analyzer helps cybersecurity professionals and syste
 
 ### Windows
 
-1. Download the `EmailIOCExtractor.exe` file from the Releases section.
+1. Download the `EmailGuard.exe` file from the Releases section.
 2. Place the file in a directory of your choice.
 3. Run the executable directly.
 
 ### Linux
 
-1. Download the `EmailIOCExtractor.elf` file from the Releases section.
+1. Download the `EmailGuard.elf` file from the Releases section.
 2. Open your terminal and navigate to the directory where the file is located.
 3. Make the file executable:
 
