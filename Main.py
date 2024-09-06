@@ -82,6 +82,26 @@ def get_attachment_hashes(part):
     attachment_data.seek(0)  # Reset file pointer to the beginning
     return {name: algo.hexdigest() for name, algo in hashes.items()}
 
+def extract_urls(email_message):
+    urls = set()  # Create a set to store unique URLs.
+    
+    # Iterate through each part of the email message.
+    for part in email_message.walk():
+        content_type = part.get_content_type()  # Get the content type of the current part (e.g., text/plain, text/html).
+        
+        # Check if the part is plain text or HTML, where URLs are likely to be found.
+        if content_type == 'text/plain' or content_type == 'text/html':
+            payload = part.get_payload(decode=True)  # Decode the payload (if encoded).
+            
+            # If the payload is bytes, decode it into a string, ignoring any errors.
+            if isinstance(payload, bytes):
+                payload = payload.decode('utf-8', errors='ignore')
+            
+            # Use a regular expression to find all URLs in the payload.
+            urls.update(re.findall(r'https?:\/\/(?:[\w\-]+\.)+[a-z]{2,}(?:\/[\w\-\.\/?%&=]*)?', payload))
+    
+    return list(urls)  # Return the list of unique URLs.
+
 def parse_email(file_path):
     dot_animation("Parsing email")
     with open(file_path, 'rb') as file:
@@ -114,7 +134,10 @@ def parse_email(file_path):
                     }
                     attachments.append(attachment_data)
     
-    return header_text, extracted_headers, attachments
+    # Extract URLs from the email body
+    urls = extract_urls(msg)
+    
+    return header_text, extracted_headers, attachments, urls
 
 def check_ip_virustotal(ip):
     headers = {
@@ -164,9 +187,14 @@ def main():
     parser.add_argument('-output', type=str, help='Path to the output report file')
     args = parser.parse_args()
     
-    header_text, extracted_headers, attachments = parse_email(args.email)
+    header_text, extracted_headers, attachments, urls = parse_email(args.email)
     iocs = extract_iocs_from_header(header_text)
     auth_results = get_authentication_results(header_text)
+    
+    # Format extracted headers content
+    extracted_headers_content = "Extracted Headers:\n"
+    for header, value in extracted_headers.items():
+        extracted_headers_content += f"  {header}: {value}\n"
     
     ioc_content = "Extracted_IPs:\n"
     for ip in iocs.get('IP Addresses', []):
@@ -179,44 +207,36 @@ def main():
         email_content += f"  {email}\n"
     
     url_content = "Extracted_URLs:\n"
-    for url in iocs.get('URLs', []):
+    for url in urls:
         url_content += f"  {url}\n"
     
-    attachment_content = "Attachments and their Hashes:\n"
+    attachments_content = "Attachments:\n"
     for attachment in attachments:
-        attachment_content += f"Filename: {attachment['filename']}\n"
-        for hash_type, hash_value in attachment['hashes'].items():
-            attachment_content += f"  {hash_type}: {hash_value}\n"
+        attachments_content += f"  {attachment['filename']}:\n"
+        for hash_name, hash_value in attachment['hashes'].items():
+            attachments_content += f"    {hash_name}: {hash_value}\n"
         md5_status, md5_message = check_md5_virustotal(attachment['hashes']['MD5'])
-        attachment_content += f"  VirusTotal MD5 Result: {md5_status} ({md5_message})\n"
+        attachments_content += f"    VirusTotal MD5 Result: {md5_status} ({md5_message})\n"
     
-    auth_content = "Authentication Results:\n"
-    for key, value in auth_results.items():
-        auth_content += f"{key}: {value}\n"
-    
-    header_content = "Extracted Headers:\n"
-    for header, value in extracted_headers.items():
-        if header == 'X-Sender-IP':
-            header_content += f"Sender-IP: {value}\n"
-        elif header == 'Sender Email':
-            header_content += f"Sender-Email: {value}\n"
-        elif header == 'Receiver Email':
-            header_content += f"Receiver-Email: {value}\n"
-        else:
-            header_content += f"{header}: {value}\n"
+    auth_results_content = "Authentication Results:\n"
+    auth_results_content += f"  SPF: {auth_results.get('SPF')}\n"
+    auth_results_content += f"  DKIM: {auth_results.get('DKIM')}\n"
+    auth_results_content += f"  DMARC: {auth_results.get('DMARC')}\n"
     
     if args.output:
-        # Write output to the specified file
-        print_section("IOCs extracted from headers", ioc_content + email_content + url_content, args.output)
-        print_section("Attachment Details", attachment_content, args.output)
-        print_section("Authentication Results", auth_content, args.output)
-        print_section("Email Headers", header_content, args.output)
+        print_section("Extracted Headers", extracted_headers_content, args.output)
+        print_section("Extracted IPs", ioc_content, args.output)
+        print_section("Extracted Emails", email_content, args.output)
+        print_section("Extracted URLs", url_content, args.output)
+        print_section("Attachments", attachments_content, args.output)
+        print_section("Authentication Results", auth_results_content, args.output)
     else:
-        # Print to console
-        print_section("IOCs extracted from headers", ioc_content + email_content + url_content)
-        print_section("Attachment Details", attachment_content)
-        print_section("Authentication Results", auth_content)
-        print_section("Email Headers", header_content)
+        print_section("Extracted Headers", extracted_headers_content)
+        print_section("Extracted IPs", ioc_content)
+        print_section("Extracted Emails", email_content)
+        print_section("Extracted URLs", url_content)
+        print_section("Attachments", attachments_content)
+        print_section("Authentication Results", auth_results_content)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
