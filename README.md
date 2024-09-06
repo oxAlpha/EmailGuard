@@ -52,13 +52,13 @@ The Email IOC Extractor and Analyzer helps cybersecurity professionals and syste
 3. Make the file executable:
 
     ```bash
-    chmod +x EmailIOCExtractor.elf
+    chmod +x EmailGuard.elf
     ```
 
 4. Run the executable:
 
     ```bash
-    ./EmailIOCExtractor.elf
+    ./EmailGuard.elf
     ```
 
 ## Usage
@@ -69,7 +69,7 @@ The Email IOC Extractor and Analyzer helps cybersecurity professionals and syste
 2. Run the tool using:
 
     ```bash
-    EmailIOCExtractor.exe -email /path/to/your/email_file.eml -output /path/to/output_report.txt
+    EmailGuard.exe -email /path/to/your/email_file.eml -output /path/to/output_report.txt
     ```
 
 ### Linux
@@ -78,7 +78,7 @@ The Email IOC Extractor and Analyzer helps cybersecurity professionals and syste
 2. Run the tool using:
 
     ```bash
-    ./EmailIOCExtractor.elf -email /path/to/your/email_file.eml -output /path/to/output_report.txt
+    ./EmailGuard.elf -email /path/to/your/email_file.eml -output /path/to/output_report.txt
     ```
 
 ## Command-Line Options
